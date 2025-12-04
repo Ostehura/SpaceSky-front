@@ -28,10 +28,10 @@ export default function SignInPage() {
         const date = new Date();
         date.setMinutes(date.getMinutes() + 5);
         localStorage.setItem("access", res.data.access);
-        localStorage.setItem("accessExpiresAt", date.toLocaleString());
+        localStorage.setItem("accessExpiresAt", date.toISOString());
         localStorage.setItem("refresh", res.data.refresh);
         date.setHours(date.getHours() + 23);
-        localStorage.setItem("refreshExpiresAt", date.toLocaleString());
+        localStorage.setItem("refreshExpiresAt", date.toISOString());
       }
       router.push("/");
     } catch (err) {
