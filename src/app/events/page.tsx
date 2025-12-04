@@ -1,10 +1,11 @@
 "use client";
 
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import { Alert, Button, Card, Form } from "react-bootstrap";
 import SmallBodyObject from "./SmallBodyObjectstype";
 import EventList from "./eventList";
+import api from "@/lib/api";
 
 type position = {
   latitude: number;
@@ -53,7 +54,7 @@ export default function EventsPage() {
     }
     const accessToken = localStorage.getItem("access");
     try {
-      const res = await axios.post(
+      const res = await api.post(
         "http://localhost:8000/events/",
         {
           latitude: location.latitude,

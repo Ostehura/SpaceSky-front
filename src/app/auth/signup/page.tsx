@@ -29,7 +29,7 @@ export default function SignInPage() {
       if (res.status % 100 == 2) {
         router.push("/");
       } else {
-        setError(res.statusText);
+        setError(res.data);
       }
     } catch (err) {
       setError(
@@ -44,7 +44,7 @@ export default function SignInPage() {
   return (
     <Card className="p-4 shadow mt-5" style={{ maxWidth: 400, margin: "auto" }}>
       <Card.Body>
-        <h3 className="text-center mb-3">Sign In</h3>
+        <h3 className="text-center mb-3">Sign Up</h3>
 
         {error && <Alert variant="danger">{error}</Alert>}
 
