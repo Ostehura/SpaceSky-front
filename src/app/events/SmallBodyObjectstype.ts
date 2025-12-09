@@ -1,9 +1,9 @@
 type SmallBodyObject = {
   latitude: number;
   longitude: number;
-  data_czas: Date;
-  promien_szukania: number;
-  jasnosc_max: number;
+  begin_time: Date;
+  end_time: Date;
+  name: string;
 };
 
 export default SmallBodyObject;

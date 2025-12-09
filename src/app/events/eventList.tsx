@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SmallBodyObject from "./SmallBodyObjectstype";
 import Table from "react-bootstrap/Table";
 
@@ -6,12 +7,24 @@ function EventListLine(props: { event: SmallBodyObject }) {
   return (
     <tr>
       <td>
+        <Link
+          href={`https://www.openstreetmap.org/#map=6/${event.latitude}/${event.longitude}`}
+        >
+          {event.name}
+        </Link>
+      </td>
+      <td>
         {event.latitude}
         <br />
         {event.longitude}
       </td>
-      <td>{event.data_czas.toLocaleDateString()}</td>
-      <td>{event.jasnosc_max}</td>
+      <td>
+        {"from: "}
+        {event.begin_time.toLocaleString()}
+        <br />
+        {"till: "}
+        {event.end_time.toLocaleString()}
+      </td>
     </tr>
   );
 }
@@ -22,9 +35,9 @@ function EventList(props: { array: SmallBodyObject[] }) {
     <Table striped bordered hover>
       <thead>
         <tr>
+          <th>Name</th>
           <th>Location</th>
           <th>Time</th>
-          <th>Brightness</th>
         </tr>
       </thead>
       <tbody>

@@ -46,7 +46,6 @@ export default function EventsPage() {
     e.preventDefault();
     setLoading(true);
 
-    console.log(location);
     if (!location.isValid) {
       setError("Location is needed for this action");
       setLoading(false);
@@ -69,6 +68,7 @@ export default function EventsPage() {
         }
       );
       setEvents(res.data);
+      setError("");
     } catch (err) {
       setError(
         JSON.stringify((err as AxiosError).response?.data) ||
