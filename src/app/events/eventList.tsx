@@ -8,7 +8,7 @@ function EventListLine(props: { event: SmallBodyObject }) {
     <tr>
       <td>
         <Link
-          href={`https://www.openstreetmap.org/#map=6/${event.latitude}/${event.longitude}`}
+          href={`https://www.openstreetmap.org/#map=6/${event.longitude}/${event.latitude}`}
         >
           {event.name}
         </Link>
