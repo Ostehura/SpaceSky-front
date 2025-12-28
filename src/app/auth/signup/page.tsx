@@ -32,10 +32,14 @@ export default function SignInPage() {
         setError(res.data);
       }
     } catch (err) {
-      setError(
-        JSON.stringify((err as AxiosError).response?.data) ||
-          "Ooops! Something went wrong"
-      );
+      const axiosErr = err as AxiosError<any>;
+      const data = axiosErr.response?.data;
+
+      if (data) {
+        setError(JSON.stringify(data));
+      } else {
+      setError("Ooops! Something went wrong");
+      }
     } finally {
       setLoading(false);
     }
