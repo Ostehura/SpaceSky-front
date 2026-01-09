@@ -3,6 +3,8 @@ type SmallBodyObject = {
   longitude: number;
   begin_time: Date;
   end_time: Date;
+  altitude: number | null;
+  azimuth: number | null;
   name: string;
 };
 
