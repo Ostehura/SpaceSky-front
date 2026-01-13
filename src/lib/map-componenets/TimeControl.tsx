@@ -74,8 +74,8 @@ export function TimeControl({ currentTime, setCurrentTime, isPaused, setIsPaused
           {/* Date and Time Display */}
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <Clock className="w-5 h-5 text-blue-400" />
-              <div className="text-white min-w-[220px]">
+              <Clock className="w-5 h-5 " />
+              <div className=" min-w-[220px]">
                 {formatDateTime(currentTime)}
               </div>
             </div>
@@ -109,7 +109,7 @@ export function TimeControl({ currentTime, setCurrentTime, isPaused, setIsPaused
               variant="outline"
               size="sm"
               onClick={handleSkipBack}
-              className="bg-slate-800 border-slate-700 text-white hover:bg-slate-700"
+              className="bg-slate-800 border-slate-700  hover:bg-slate-700"
             >
               <SkipBack className="w-4 h-4" />
             </Button>
@@ -118,7 +118,7 @@ export function TimeControl({ currentTime, setCurrentTime, isPaused, setIsPaused
               variant="default"
               size="sm"
               onClick={() => setIsPaused(!isPaused)}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6"
+              className="bg-blue-600 hover:bg-blue-700  px-6"
             >
               {isPaused ? (
                 <>
@@ -137,7 +137,7 @@ export function TimeControl({ currentTime, setCurrentTime, isPaused, setIsPaused
               variant="outline"
               size="sm"
               onClick={handleSkipForward}
-              className="bg-slate-800 border-slate-700 text-white hover:bg-slate-700"
+              className="bg-slate-800 border-slate-700  hover:bg-slate-700"
             >
               <SkipForward className="w-4 h-4" />
             </Button>
@@ -146,7 +146,7 @@ export function TimeControl({ currentTime, setCurrentTime, isPaused, setIsPaused
               variant="outline"
               size="sm"
               onClick={handleResetToNow}
-              className="bg-slate-800 border-slate-700 text-white hover:bg-slate-700"
+              className="bg-slate-800 border-slate-700 hover:bg-slate-700"
             >
               Now
             </Button>
@@ -170,6 +170,7 @@ export function TimeControl({ currentTime, setCurrentTime, isPaused, setIsPaused
                       ? 'bg-blue-600 text-white'
                       : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
                   }`}
+                  style={{backgroundColor:  timeSpeed === option.value?"black":"white" }}
                 >
                   {option.label}
                 </button>

@@ -40,6 +40,7 @@ useEffect(() => {
         <div className="relative w-full h-full">
         {/* 3D Space Map */}
         {currentTime && <SpaceMap 
+          isPaused={isPaused}
           currentTime={currentTime} 
           selectedSatellite={selectedSatellite}
           onSelectSatellite={setSelectedSatellite}

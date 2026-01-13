@@ -7,13 +7,14 @@ interface SpaceMapProps {
   currentTime: Date;
   selectedSatellite: string | null;
   onSelectSatellite: (id: string | null) => void;
+  isPaused: boolean;
 }
 interface position{
   x:number;
   y:number;
   size:number;
 }
-export function SpaceMap({ currentTime, selectedSatellite, onSelectSatellite }: SpaceMapProps) {
+export function SpaceMap({ currentTime, selectedSatellite, onSelectSatellite, isPaused }: SpaceMapProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [rotation, setRotation] = useState(0);
   const isDragging = useRef(false);
@@ -48,6 +49,9 @@ useEffect(() => {
 }, []);
 
   useEffect(() => {
+    if(isPaused){
+      return;
+    }
     const starposition: position[] = [];
     const canvas = canvasRef.current;
     
