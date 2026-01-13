@@ -2,19 +2,21 @@
 import { useEffect, useRef, useState } from 'react';
 import { getSatellitePosition, SATELLITES } from '../satelliteData';
 import { json } from 'stream/consumers';
+import SmallBodyObject from '@/app/events/SmallBodyObjectstype';
 
 interface SpaceMapProps {
   currentTime: Date;
   selectedSatellite: string | null;
   onSelectSatellite: (id: string | null) => void;
   isPaused: boolean;
+  SBOs: SmallBodyObject[];
 }
 interface position{
   x:number;
   y:number;
   size:number;
 }
-export function SpaceMap({ currentTime, selectedSatellite, onSelectSatellite, isPaused }: SpaceMapProps) {
+export function SpaceMap({ currentTime, selectedSatellite, onSelectSatellite, isPaused, SBOs }: SpaceMapProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [rotation, setRotation] = useState(0);
   const isDragging = useRef(false);
@@ -63,7 +65,7 @@ useEffect(() => {
     const rect = canvas.getBoundingClientRect();
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-console.log(rect.width, rect.height)
+
 
 
     const earthRadius = Math.min(rect.width, rect.height) * 0.25 * zoom;
@@ -90,12 +92,13 @@ console.log(rect.width, rect.height)
       ctx.arc(starPosition[i].x, starPosition[i].y, size, 0, Math.PI * 2);
       ctx.fill();
     }
+    
 
     // Save context for Earth rotation
     ctx.save();
     ctx.translate(centerX, centerY);
     // ctx.rotate(rotation);
-
+  
     // Draw Earth
     const earthGradient = ctx.createRadialGradient(0, 0, 0, 0, 0, earthRadius);
     earthGradient.addColorStop(0, '#3b82f6');
@@ -264,20 +267,33 @@ console.log(rect.width, rect.height)
 
     ctx.globalAlpha = 1;
     ctx.restore();
+    // ctx.strokeStyle = "f59e0b"
+    // ctx.arc(5,5,1,0,Math.PI*2);
+    // ctx.stroke();
+    
+    SBOs.forEach((sbo: SmallBodyObject)=>{
+        if(90 <= sbo.longitude && sbo.longitude<= 270 ) return;
+        ctx.beginPath();
+        ctx.fillStyle = "#f59e0b";
+        const deltaX = Math.sin(sbo.latitude)*200*zoom;
+        const deltaY = Math.sin(sbo.longitude)*200*zoom;
 
+        ctx.arc(deltaX + centerX, deltaY+ centerY, 3, 0, Math.PI * 2);
+        ctx.fill();
+      })
     // Draw orbital paths and satellites
     SATELLITES.forEach((satellite) => {
       const pos = getSatellitePosition(satellite, currentTime);
       
       // Draw orbit
-      ctx.strokeStyle = satellite.id === selectedSatellite ? '#f59e0b' : '#6366f1';
-      ctx.lineWidth = 1;
-      ctx.globalAlpha = 0.3;
-      ctx.beginPath();
+      // ctx.strokeStyle = satellite.id === selectedSatellite ? '#f59e0b' : '#6366f1';
+      // ctx.lineWidth = 1;
+      // ctx.globalAlpha = 0.3;
+      // ctx.beginPath();
       const orbitRadius = earthRadius + (pos.altitude / 10);
-      ctx.arc(centerX, centerY, orbitRadius, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.globalAlpha = 1;
+      // ctx.arc(centerX, centerY, orbitRadius, 0, Math.PI * 2);
+      // ctx.stroke();
+      // ctx.globalAlpha = 1;
 
       // Calculate satellite position on screen
       const angle = rotation + (pos.longitude * Math.PI / 180);
@@ -286,19 +302,19 @@ console.log(rect.width, rect.height)
 
       // Draw satellite
       const isSelected = satellite.id === selectedSatellite;
-      ctx.fillStyle = isSelected ? '#f59e0b' : '#60a5fa';
-      ctx.beginPath();
-      ctx.arc(satX, satY, isSelected ? 6 : 4, 0, Math.PI * 2);
-      ctx.fill();
+      // ctx.fillStyle = isSelected ? '#f59e0b' : '#60a5fa';
+      // ctx.beginPath();
+      // ctx.arc(satX, satY, isSelected ? 6 : 4, 0, Math.PI * 2);
+      // ctx.fill();
 
-      // Draw satellite glow
-      ctx.strokeStyle = isSelected ? '#f59e0b' : '#60a5fa';
-      ctx.lineWidth = 2;
-      ctx.globalAlpha = 0.3;
-      ctx.beginPath();
-      ctx.arc(satX, satY, isSelected ? 12 : 8, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.globalAlpha = 1;
+      // // Draw satellite glow
+      // ctx.strokeStyle = isSelected ? '#f59e0b' : '#60a5fa';
+      // ctx.lineWidth = 2;
+      // ctx.globalAlpha = 0.3;
+      // ctx.beginPath();
+      // ctx.arc(satX, satY, isSelected ? 12 : 8, 0, Math.PI * 2);
+      // ctx.stroke();
+      // ctx.globalAlpha = 1;
 
       // Draw satellite label
       if (isSelected) {
@@ -307,6 +323,7 @@ console.log(rect.width, rect.height)
         ctx.fillText(satellite.name, satX + 10, satY - 10);
       }
     });
+    
 
   }, [currentTime, rotation, selectedSatellite, zoom]);
 

@@ -6,12 +6,9 @@ import { Alert, Button, Card, Form } from "react-bootstrap";
 import SmallBodyObject from "./SmallBodyObjectstype";
 import EventList from "./eventList";
 import api from "@/lib/api";
+import { position } from "@/lib/position";
 
-type position = {
-  latitude: number;
-  longitude: number;
-  isValid: boolean;
-};
+
 
 export default function EventsPage() {
   const [beginTime, setBeginTime] = useState<string>("");

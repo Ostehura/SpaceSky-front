@@ -1,3 +1,5 @@
+import { InterpolationPoint } from "./InterpolationPoint";
+
 type SmallBodyObject = {
   latitude: number;
   longitude: number;
@@ -6,6 +8,7 @@ type SmallBodyObject = {
   altitude: number | null;
   azimuth: number | null;
   name: string;
+  points12: InterpolationPoint[];
 };
 
 export default SmallBodyObject;
