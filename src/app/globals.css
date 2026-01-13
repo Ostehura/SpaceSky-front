@@ -191,5 +191,6 @@ html {
 body, html {
   margin: 0;
   padding: 0;
-  overflow: hidden; /* Prevents the "half-page" shift from causing scrollbars */
+  overflow-x: hidden; /* Prevents the "half-page" shift from causing scrollbars */
+
 }

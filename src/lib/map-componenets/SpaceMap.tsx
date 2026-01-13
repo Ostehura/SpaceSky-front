@@ -34,7 +34,7 @@ useEffect(() => {
     const rect = canvas.getBoundingClientRect();
     const dpr = window.devicePixelRatio || 1;
    
-    canvas.height = window.innerHeight * 0.5;
+    canvas.height = window.innerHeight *0.8;
   
     canvas.width = window.innerWidth * 0.9;
     
