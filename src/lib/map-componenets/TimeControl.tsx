@@ -1,7 +1,13 @@
-import { useState, useEffect } from 'react';
-import { Play, Pause, SkipForward, SkipBack, Calendar, Clock } from 'lucide-react';
-import { Button } from 'react-bootstrap';
-
+import { useState, useEffect } from "react";
+import {
+  Play,
+  Pause,
+  SkipForward,
+  SkipBack,
+  Calendar,
+  Clock,
+} from "lucide-react";
+import { Button } from "react-bootstrap";
 
 interface TimeControlProps {
   currentTime: Date;
@@ -10,7 +16,12 @@ interface TimeControlProps {
   setIsPaused: (paused: boolean) => void;
 }
 
-export function TimeControl({ currentTime, setCurrentTime, isPaused, setIsPaused }: TimeControlProps) {
+export function TimeControl({
+  currentTime,
+  setCurrentTime,
+  isPaused,
+  setIsPaused,
+}: TimeControlProps) {
   const [timeSpeed, setTimeSpeed] = useState(1);
   const [showDatePicker, setShowDatePicker] = useState(false);
 
@@ -18,21 +29,21 @@ export function TimeControl({ currentTime, setCurrentTime, isPaused, setIsPaused
   useEffect(() => {
     if (!isPaused) {
       const interval = setInterval(() => {
-        setCurrentTime(new Date(currentTime.getTime() + 50 * timeSpeed));
-      }, 50);
+        setCurrentTime(new Date(currentTime.getTime() + 500 * timeSpeed));
+      }, 500);
       return () => clearInterval(interval);
     }
   }, [isPaused, currentTime, timeSpeed, setCurrentTime]);
 
   const formatDateTime = (date: Date) => {
-    return date.toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false
+    return date.toLocaleString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
     });
   };
 
@@ -60,11 +71,11 @@ export function TimeControl({ currentTime, setCurrentTime, isPaused, setIsPaused
   };
 
   const speedOptions = [
-    { value: 1, label: '1x' },
-    { value: 10, label: '10x' },
-    { value: 60, label: '1m' },
-    { value: 300, label: '5m' },
-    { value: 3600, label: '1h' },
+    { value: 1, label: "1x" },
+    { value: 30, label: "30x" },
+    { value: 600, label: "10m" },
+    { value: 1800, label: "30m" },
+    { value: 3600, label: "1h" },
   ];
 
   return (
@@ -157,7 +168,8 @@ export function TimeControl({ currentTime, setCurrentTime, isPaused, setIsPaused
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-400">Time Speed</span>
               <span className="text-sm text-white">
-                {speedOptions.find(s => s.value === timeSpeed)?.label || `${timeSpeed}x`}
+                {speedOptions.find((s) => s.value === timeSpeed)?.label ||
+                  `${timeSpeed}x`}
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -167,10 +179,13 @@ export function TimeControl({ currentTime, setCurrentTime, isPaused, setIsPaused
                   onClick={() => setTimeSpeed(option.value)}
                   className={`px-3 py-1 rounded text-xs transition-colors ${
                     timeSpeed === option.value
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                      ? "bg-blue-600 text-white"
+                      : "bg-slate-800 text-slate-400 hover:bg-slate-700"
                   }`}
-                  style={{backgroundColor:  timeSpeed === option.value?"black":"white" }}
+                  style={{
+                    backgroundColor:
+                      timeSpeed === option.value ? "black" : "white",
+                  }}
                 >
                   {option.label}
                 </button>
