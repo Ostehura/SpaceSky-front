@@ -26,15 +26,15 @@ export default function SignInPage() {
         password,
         password2: password_confirmation,
       });
-      if (res.status % 100 == 2) {
+      if (200 <= res.status && res.status <= 299) {
         router.push("/");
       } else {
-        setError(res.statusText);
+        setError(res.data);
       }
     } catch (err) {
       setError(
         JSON.stringify((err as AxiosError).response?.data) ||
-          "Ooops! Something went wrong"
+          "Ooops! Something went wrong",
       );
     } finally {
       setLoading(false);
@@ -44,7 +44,7 @@ export default function SignInPage() {
   return (
     <Card className="p-4 shadow mt-5" style={{ maxWidth: 400, margin: "auto" }}>
       <Card.Body>
-        <h3 className="text-center mb-3">Sign In</h3>
+        <h3 className="text-center mb-3">Sign Up</h3>
 
         {error && <Alert variant="danger">{error}</Alert>}
 

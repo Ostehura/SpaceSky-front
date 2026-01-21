@@ -1,9 +1,15 @@
+import { InterpolationPoint } from "./InterpolationPoint";
+
 type SmallBodyObject = {
   latitude: number;
   longitude: number;
-  data_czas: Date;
-  promien_szukania: number;
-  jasnosc_max: number;
+  begin_time: Date;
+  end_time: Date;
+  altitude: number | null;
+  azimuth: number | null;
+  name: string;
+  points12: InterpolationPoint[];
+  distance: number;
 };
 
 export default SmallBodyObject;

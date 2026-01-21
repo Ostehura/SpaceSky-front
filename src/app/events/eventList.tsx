@@ -1,17 +1,57 @@
+import Link from "next/link";
 import SmallBodyObject from "./SmallBodyObjectstype";
 import Table from "react-bootstrap/Table";
+import axios from "axios";
+import Button from "react-bootstrap/Button";
 
 function EventListLine(props: { event: SmallBodyObject }) {
+  const sendRequest = (eventName: string, eventTime: Date) => {
+    const accessToken = localStorage.getItem("access");
+    axios.post(
+      "http://localhost:8000/subscribe/",
+      { event_name: eventName, event_time: eventTime.toISOString() },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+  };
   const event = props.event;
   return (
     <tr>
+      <td>
+        <Link
+          href={`https://www.openstreetmap.org/#map=6/${event.longitude}/${event.latitude}`}
+        >
+          {event.name}
+        </Link>
+      </td>
       <td>
         {event.latitude}
         <br />
         {event.longitude}
       </td>
-      <td>{event.data_czas.toLocaleDateString()}</td>
-      <td>{event.jasnosc_max}</td>
+      <td>
+        {event.azimuth}
+        <br />
+        {event.altitude}
+      </td>
+      <td>
+        {"from: "}
+        {event.begin_time.toLocaleString()}
+        <br />
+        {"till: "}
+        {event.end_time.toLocaleString()}
+      </td>
+      <td>
+        <Button
+          variant="primary"
+          onClick={() => sendRequest(event.name, event.begin_time)}
+        >
+          Click me
+        </Button>
+      </td>
     </tr>
   );
 }
@@ -22,9 +62,11 @@ function EventList(props: { array: SmallBodyObject[] }) {
     <Table striped bordered hover>
       <thead>
         <tr>
+          <th>Name</th>
           <th>Location</th>
+          <th>Azimuth & Altitude</th>
           <th>Time</th>
-          <th>Brightness</th>
+          <th>subscibe</th>
         </tr>
       </thead>
       <tbody>

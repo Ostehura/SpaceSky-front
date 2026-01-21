@@ -1,16 +1,14 @@
 "use client";
 
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import { Alert, Button, Card, Form } from "react-bootstrap";
 import SmallBodyObject from "./SmallBodyObjectstype";
 import EventList from "./eventList";
+import api from "@/lib/api";
+import { position } from "@/lib/position";
 
-type position = {
-  latitude: number;
-  longitude: number;
-  isValid: boolean;
-};
+
 
 export default function EventsPage() {
   const [beginTime, setBeginTime] = useState<string>("");
@@ -45,7 +43,6 @@ export default function EventsPage() {
     e.preventDefault();
     setLoading(true);
 
-    console.log(location);
     if (!location.isValid) {
       setError("Location is needed for this action");
       setLoading(false);
@@ -53,7 +50,7 @@ export default function EventsPage() {
     }
     const accessToken = localStorage.getItem("access");
     try {
-      const res = await axios.post(
+      const res = await api.post(
         "http://localhost:8000/events/",
         {
           latitude: location.latitude,
@@ -68,6 +65,7 @@ export default function EventsPage() {
         }
       );
       setEvents(res.data);
+      setError("");
     } catch (err) {
       setError(
         JSON.stringify((err as AxiosError).response?.data) ||
