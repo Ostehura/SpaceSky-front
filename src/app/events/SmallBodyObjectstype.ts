@@ -9,6 +9,7 @@ type SmallBodyObject = {
   azimuth: number | null;
   name: string;
   points12: InterpolationPoint[];
+  distance: number;
 };
 
 export default SmallBodyObject;

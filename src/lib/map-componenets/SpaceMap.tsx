@@ -77,6 +77,7 @@ export function SpaceMap({
     if (isPaused) {
       return;
     }
+
     const starposition: position[] = [];
     const canvas = canvasRef.current;
 
@@ -89,7 +90,8 @@ export function SpaceMap({
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
 
-    const earthRadius = Math.min(rect.width, rect.height) * 0.25 * zoom;
+    const earthRadius = Math.min(rect.width, rect.height) * 0.25 * zoom; //10000
+    const PixelsPerAstromicalUnit = rect.width / 4;
 
     // Clear canvas
     ctx.clearRect(0, 0, rect.width, rect.height);
@@ -109,7 +111,7 @@ export function SpaceMap({
       }
       const size = Math.max(
         starPosition[i].size * (Math.random() * 0.2 + 1),
-        0
+        0,
       );
       // const size = Math.random() * 2;
       ctx.beginPath();
@@ -298,9 +300,11 @@ export function SpaceMap({
       if (90 <= sbo.longitude && sbo.longitude <= 270) return;
       ctx.beginPath();
       ctx.fillStyle = "#f59e0b";
-      const deltaX = Math.sin(sbo.latitude) * 200 * zoom;
-      const deltaY = Math.sin(sbo.longitude) * 200 * zoom;
-
+      const deltaX =
+        Math.sin(sbo.latitude) * sbo.distance * zoom * PixelsPerAstromicalUnit;
+      const deltaY =
+        Math.sin(sbo.longitude) * sbo.distance * zoom * PixelsPerAstromicalUnit;
+      console.log(deltaX + centerX, deltaY + centerY);
       ctx.arc(deltaX + centerX, deltaY + centerY, 3, 0, Math.PI * 2);
       ctx.fill();
     });
@@ -378,7 +382,7 @@ export function SpaceMap({
 
   const handleWheel = (e: React.WheelEvent) => {
     setZoom((prev) =>
-      Math.max(0.5, Math.min(3, prev + (e.deltaY > 0 ? -0.1 : 0.1)))
+      Math.max(0.5, Math.min(3, prev + (e.deltaY > 0 ? -0.1 : 0.1))),
     );
   };
 
