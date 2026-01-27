@@ -112,11 +112,7 @@ export default function Home() {
           <Row>
             <Col>
               {currentTime && (
-                <SatellitePanel
-                  selectedSatellite={selectedSatellite}
-                  onSelectSatellite={setSelectedSatellite}
-                  currentTime={simulationTime}
-                />
+                <SatellitePanel SBOs={SBOs} currentTime={simulationTime} />
               )}
             </Col>
             <Col>

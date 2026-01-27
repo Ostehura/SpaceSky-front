@@ -431,9 +431,7 @@ export function SpaceMap({
 
       {/* Controls hint */}
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-900/80 backdrop-blur-sm px-4 py-2 rounded-lg border border-slate-700">
-        <p className="text-slate-300 text-sm">
-          Drag to rotate • Scroll to zoom • Click satellites to select
-        </p>
+        <p className="text-slate-300 text-sm">Scroll to zoom</p>
       </div>
     </div>
   );

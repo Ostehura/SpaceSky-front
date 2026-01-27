@@ -1,34 +1,39 @@
-"use client"
-import { useState } from 'react';
-import { SATELLITES, getSatellitePosition } from '../satelliteData';
-import { Search, Satellite, X, Radio, Globe, Zap } from 'lucide-react';
+"use client";
+import { useState } from "react";
+import { SATELLITES, getSatellitePosition } from "../satelliteData";
+import { Search, Satellite, X, Radio, Globe, Zap } from "lucide-react";
 // import { Input } from '../ui/input';
 // import { ScrollArea } from '../ui/scroll-area';
 // import { Badge } from '../ui/badge';
-import { Card } from "react-bootstrap"
+import { Card } from "react-bootstrap";
+import SmallBodyObject from "@/app/events/SmallBodyObjectstype";
 
 interface SatellitePanelProps {
-  selectedSatellite: string | null;
-  onSelectSatellite: (id: string | null) => void;
+  SBOs: SmallBodyObject[];
+
   currentTime: Date;
 }
 
-export function SatellitePanel({ selectedSatellite, onSelectSatellite, currentTime }: SatellitePanelProps) {
-  const [searchQuery, setSearchQuery] = useState('');
+export function SatellitePanel({
+  SBOs,
+
+  currentTime,
+}: SatellitePanelProps) {
+  const [searchQuery, setSearchQuery] = useState("");
   const [isExpanded, setIsExpanded] = useState(true);
 
-  const filteredSatellites = SATELLITES.filter((sat) =>
-    sat.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    sat.type.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredSatellites = SATELLITES.filter(
+    (sat) =>
+      sat.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      sat.type.toLowerCase().includes(searchQuery.toLowerCase()),
   );
-
-  const selectedSatData = SATELLITES.find((sat) => sat.id === selectedSatellite);
-  const selectedPosition = selectedSatData ? getSatellitePosition(selectedSatData, currentTime) : null;
 
   return (
     <>
       {/* Satellite List Panel */}
-      <div className={`absolute left-0 top-20 bottom-0 w-80 bg-slate-900/95 backdrop-blur-sm border-r border-slate-800 transition-transform duration-300 z-10 ${!isExpanded ? '-translate-x-full' : ''}`}>
+      <div
+        className={`absolute left-0 top-20 bottom-0 w-80 bg-slate-900/95 backdrop-blur-sm border-r border-slate-800 transition-transform duration-300 z-10 ${!isExpanded ? "-translate-x-full" : ""}`}
+      >
         <div className="flex flex-col h-full">
           {/* Search */}
           <div className="p-4 border-b border-slate-800">
@@ -43,8 +48,18 @@ export function SatellitePanel({ selectedSatellite, onSelectSatellite, currentTi
               />
             </div> */}
             <div className="mt-3 flex gap-2 flex-wrap">
-              <Card >
-                {SATELLITES.length} Satellites
+              <Card>
+                <Card.Header>{SBOs.length} Satellites</Card.Header>
+                <Card.Body>
+                  {SBOs.map((sbo) => {
+                    return (
+                      <>
+                        {sbo.name}
+                        <br />
+                      </>
+                    );
+                  })}
+                </Card.Body>
               </Card>
             </div>
           </div>
@@ -96,72 +111,12 @@ export function SatellitePanel({ selectedSatellite, onSelectSatellite, currentTi
         onClick={() => setIsExpanded(!isExpanded)}
         className="absolute left-4 top-24 z-20 bg-slate-900 hover:bg-slate-800 text-white p-2 rounded-lg border border-slate-700 transition-colors"
       >
-        {isExpanded ? <X className="w-5 h-5" /> : <Satellite className="w-5 h-5" />}
+        {isExpanded ? (
+          <X className="w-5 h-5" />
+        ) : (
+          <Satellite className="w-5 h-5" />
+        )}
       </button>
-
-      {/* Satellite Info Panel */}
-      {selectedSatData && selectedPosition && (
-        <Card className="absolute right-6 top-24 w-80 bg-slate-900/95 backdrop-blur-sm border-slate-700 z-10">
-          <div className="p-4">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex-1">
-                <h3 className="text-white mb-1">{selectedSatData.name}</h3>
-                <Card>
-                  {selectedSatData.type}
-                </Card>
-              </div>
-              <button
-                onClick={() => onSelectSatellite(null)}
-                className="text-slate-400 hover:text-white transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="space-y-3 text-sm">
-              <div className="flex items-start gap-3">
-                <Globe className="w-4 h-4 text-blue-400 mt-0.5" />
-                <div className="flex-1">
-                  <div className="text-slate-400">Position</div>
-                  <div className="text-white mt-1">
-                    Lat: {selectedPosition.latitude.toFixed(2)}°
-                  </div>
-                  <div className="text-white">
-                    Lon: {selectedPosition.longitude.toFixed(2)}°
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <Zap className="w-4 h-4 text-yellow-400 mt-0.5" />
-                <div className="flex-1">
-                  <div className="text-slate-400">Altitude</div>
-                  <div className="text-white mt-1">
-                    {selectedPosition.altitude.toFixed(2)} km
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <Radio className="w-4 h-4 text-green-400 mt-0.5" />
-                <div className="flex-1">
-                  <div className="text-slate-400">Velocity</div>
-                  <div className="text-white mt-1">
-                    {selectedPosition.velocity.toFixed(2)} km/s
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-3 border-t border-slate-800">
-                <div className="text-slate-400 text-xs mb-2">Launch Date</div>
-                <div className="text-white text-xs">
-                  {selectedSatData.launchDate}
-                </div>
-              </div>
-            </div>
-          </div>
-        </Card>
-      )}
     </>
   );
 }
