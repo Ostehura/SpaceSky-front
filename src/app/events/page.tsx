@@ -8,8 +8,6 @@ import EventList from "./eventList";
 import api from "@/lib/api";
 import { position } from "@/lib/position";
 
-
-
 export default function EventsPage() {
   const [beginTime, setBeginTime] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
@@ -34,7 +32,7 @@ export default function EventsPage() {
         (err) => {
           console.error("Geolocation error:", err);
           setLocation((l) => ({ ...l, isValid: false }));
-        }
+        },
       );
     }
   }, []);
@@ -51,7 +49,7 @@ export default function EventsPage() {
     const accessToken = localStorage.getItem("access");
     try {
       const res = await api.post(
-        "http://localhost:8000/events/",
+        `/events/`,
         {
           latitude: location.latitude,
           longitude: location.longitude,
@@ -62,14 +60,14 @@ export default function EventsPage() {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        }
+        },
       );
       setEvents(res.data);
       setError("");
     } catch (err) {
       setError(
         JSON.stringify((err as AxiosError).response?.data) ||
-          "Ooops! Something went wrong"
+          "Ooops! Something went wrong",
       );
     } finally {
       setLoading(false);

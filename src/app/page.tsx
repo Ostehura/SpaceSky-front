@@ -11,7 +11,7 @@ import SmallBodyObject from "./events/SmallBodyObjectstype";
 const minute: number = 60_000;
 export default function Home() {
   const [selectedSatellite, setSelectedSatellite] = useState<string | null>(
-    null
+    null,
   );
   const [isPaused, setIsPaused] = useState(false);
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
@@ -33,9 +33,8 @@ export default function Home() {
           });
         },
         (err) => {
-          console.error("Geolocation error:", err);
           setLocation((l) => ({ ...l, isValid: false }));
-        }
+        },
       );
     }
   }, []);
@@ -44,13 +43,11 @@ export default function Home() {
       try {
         const beginTime = new Date();
         const endTime = new Date();
-        console.log(beginTime);
         endTime.setHours(beginTime.getHours() + 6);
         beginTime.setHours(beginTime.getHours() - 6);
-        console.log(beginTime, endTime);
         const accessToken = localStorage.getItem("access");
         const res: { data: SmallBodyObject[] } = await api.post(
-          "http://localhost:8000/events/",
+          `/events/`,
           {
             latitude: location.latitude,
             longitude: location.longitude,
@@ -61,7 +58,7 @@ export default function Home() {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
-          }
+          },
         );
 
         setSBOs(res.data);
@@ -115,11 +112,7 @@ export default function Home() {
           <Row>
             <Col>
               {currentTime && (
-                <SatellitePanel
-                  selectedSatellite={selectedSatellite}
-                  onSelectSatellite={setSelectedSatellite}
-                  currentTime={simulationTime}
-                />
+                <SatellitePanel SBOs={SBOs} currentTime={simulationTime} />
               )}
             </Col>
             <Col>

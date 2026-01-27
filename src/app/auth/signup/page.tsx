@@ -1,9 +1,10 @@
 "use client";
 import { useState, FormEvent } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import api from "@/lib/api";
 
 export default function SignInPage() {
   const [email, setEmail] = useState<string>("");
@@ -20,7 +21,7 @@ export default function SignInPage() {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:8000/api/register/", {
+      const res = await api.post("/api/register/", {
         email,
         username,
         password,
@@ -32,10 +33,14 @@ export default function SignInPage() {
         setError(res.data);
       }
     } catch (err) {
-      setError(
-        JSON.stringify((err as AxiosError).response?.data) ||
-          "Ooops! Something went wrong",
-      );
+      const axiosErr = err as AxiosError<any>;
+      const data = axiosErr.response?.data;
+
+      if (data) {
+        setError(JSON.stringify(data));
+      } else {
+        setError("Ooops! Something went wrong");
+      }
     } finally {
       setLoading(false);
     }

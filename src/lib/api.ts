@@ -3,7 +3,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: process.env.NEXT_PUBLIC_BACKEND,
 });
 
 api.interceptors.request.use(async (config) => {
@@ -20,7 +20,7 @@ api.interceptors.request.use(async (config) => {
 
   if (refresh) {
     try {
-      const res = await axios.post("http://localhost:8000/api/token/refresh/", {
+      const res = await axios.post("/api/token/refresh/", {
         refresh,
       });
 

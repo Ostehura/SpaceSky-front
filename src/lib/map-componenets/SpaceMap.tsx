@@ -31,17 +31,15 @@ export function SpaceMap({
   const [starPosition, setStars] = useState<position[]>([]);
   useEffect(() => {
     const recaluclateLocation = async () => {
-      // console.log("CT", currentTime);
       if (!currentTime) {
         return;
       }
 
       SBOs.forEach((sbo: SmallBodyObject) => {
         const obj = lagrangeInterpolation(sbo.points12, currentTime);
-        sbo.latitude = obj.ra;
-        sbo.longitude = obj.dec;
+        sbo.longitude = obj.ra;
+        sbo.latitude = obj.dec;
       });
-      console.log(SBOs);
     };
 
     const interval = setInterval(recaluclateLocation, 250);
@@ -301,10 +299,9 @@ export function SpaceMap({
       ctx.beginPath();
       ctx.fillStyle = "#f59e0b";
       const deltaX =
-        Math.sin(sbo.latitude) * sbo.distance * zoom * PixelsPerAstromicalUnit;
-      const deltaY =
         Math.sin(sbo.longitude) * sbo.distance * zoom * PixelsPerAstromicalUnit;
-      console.log(deltaX + centerX, deltaY + centerY);
+      const deltaY =
+        Math.sin(sbo.latitude) * sbo.distance * zoom * PixelsPerAstromicalUnit;
       ctx.arc(deltaX + centerX, deltaY + centerY, 3, 0, Math.PI * 2);
       ctx.fill();
     });
@@ -434,9 +431,7 @@ export function SpaceMap({
 
       {/* Controls hint */}
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-900/80 backdrop-blur-sm px-4 py-2 rounded-lg border border-slate-700">
-        <p className="text-slate-300 text-sm">
-          Drag to rotate • Scroll to zoom • Click satellites to select
-        </p>
+        <p className="text-slate-300 text-sm">Scroll to zoom</p>
       </div>
     </div>
   );
