@@ -5,6 +5,7 @@ import axios from "axios";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import api from "@/lib/api";
 
 export default function SignInPage() {
   const [username, setUsername] = useState<string>("");
@@ -19,7 +20,7 @@ export default function SignInPage() {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:8000/api/login/", {
+      const res = await api.post(`/api/login/`, {
         username,
         password,
       });
@@ -37,7 +38,7 @@ export default function SignInPage() {
     } catch (err) {
       setError(
         JSON.stringify((err as AxiosError).response?.data) ||
-          "Login failed. Please check your credentials."
+          "Login failed. Please check your credentials.",
       );
     } finally {
       setLoading(false);

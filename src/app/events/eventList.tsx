@@ -1,20 +1,22 @@
 import Link from "next/link";
 import SmallBodyObject from "./SmallBodyObjectstype";
 import Table from "react-bootstrap/Table";
-import axios from "axios";
+
 import Button from "react-bootstrap/Button";
+import api from "@/lib/api";
 
 function EventListLine(props: { event: SmallBodyObject }) {
-  const sendRequest = (eventName: string, eventTime: Date) => {
+  const sendRequest = (eventName: string, eventTime: string) => {
     const accessToken = localStorage.getItem("access");
-    axios.post(
-      "http://localhost:8000/subscribe/",
-      { event_name: eventName, event_time: eventTime.toISOString() },
+    console.log(eventTime);
+    api.post(
+      `/subscribe/`,
+      { event_name: eventName, event_time: new Date(eventTime).toISOString() },
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      }
+      },
     );
   };
   const event = props.event;

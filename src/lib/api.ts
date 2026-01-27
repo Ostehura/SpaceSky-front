@@ -20,7 +20,7 @@ api.interceptors.request.use(async (config) => {
 
   if (refresh) {
     try {
-      const res = await axios.post("http://localhost:8000/api/token/refresh/", {
+      const res = await axios.post("/api/token/refresh/", {
         refresh,
       });
 

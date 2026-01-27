@@ -11,7 +11,7 @@ import SmallBodyObject from "./events/SmallBodyObjectstype";
 const minute: number = 60_000;
 export default function Home() {
   const [selectedSatellite, setSelectedSatellite] = useState<string | null>(
-    null
+    null,
   );
   const [isPaused, setIsPaused] = useState(false);
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
@@ -35,7 +35,7 @@ export default function Home() {
         (err) => {
           console.error("Geolocation error:", err);
           setLocation((l) => ({ ...l, isValid: false }));
-        }
+        },
       );
     }
   }, []);
@@ -50,7 +50,7 @@ export default function Home() {
         console.log(beginTime, endTime);
         const accessToken = localStorage.getItem("access");
         const res: { data: SmallBodyObject[] } = await api.post(
-          "http://localhost:8000/events/",
+          `/events/`,
           {
             latitude: location.latitude,
             longitude: location.longitude,
@@ -61,7 +61,7 @@ export default function Home() {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
-          }
+          },
         );
 
         setSBOs(res.data);
