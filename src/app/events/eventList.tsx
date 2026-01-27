@@ -48,7 +48,9 @@ function EventListLine(props: { event: SmallBodyObject }) {
       <td>
         <Button
           variant="primary"
-          onClick={() => sendRequest(event.name, event.begin_time)}
+          onClick={() =>
+            sendRequest(event.name, event.begin_time.toLocaleString())
+          }
         >
           Click me
         </Button>
