@@ -37,8 +37,8 @@ export function SpaceMap({
 
       SBOs.forEach((sbo: SmallBodyObject) => {
         const obj = lagrangeInterpolation(sbo.points12, currentTime);
-        sbo.latitude = obj.ra;
-        sbo.longitude = obj.dec;
+        sbo.longitude = obj.ra;
+        sbo.latitude = obj.dec;
       });
     };
 
