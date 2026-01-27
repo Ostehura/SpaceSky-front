@@ -33,7 +33,6 @@ export default function Home() {
           });
         },
         (err) => {
-          console.error("Geolocation error:", err);
           setLocation((l) => ({ ...l, isValid: false }));
         },
       );
@@ -44,10 +43,8 @@ export default function Home() {
       try {
         const beginTime = new Date();
         const endTime = new Date();
-        console.log(beginTime);
         endTime.setHours(beginTime.getHours() + 6);
         beginTime.setHours(beginTime.getHours() - 6);
-        console.log(beginTime, endTime);
         const accessToken = localStorage.getItem("access");
         const res: { data: SmallBodyObject[] } = await api.post(
           `/events/`,

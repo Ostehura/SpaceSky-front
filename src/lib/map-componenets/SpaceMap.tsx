@@ -31,7 +31,6 @@ export function SpaceMap({
   const [starPosition, setStars] = useState<position[]>([]);
   useEffect(() => {
     const recaluclateLocation = async () => {
-      // console.log("CT", currentTime);
       if (!currentTime) {
         return;
       }
@@ -41,7 +40,6 @@ export function SpaceMap({
         sbo.latitude = obj.ra;
         sbo.longitude = obj.dec;
       });
-      console.log(SBOs);
     };
 
     const interval = setInterval(recaluclateLocation, 250);
@@ -304,7 +302,6 @@ export function SpaceMap({
         Math.sin(sbo.latitude) * sbo.distance * zoom * PixelsPerAstromicalUnit;
       const deltaY =
         Math.sin(sbo.longitude) * sbo.distance * zoom * PixelsPerAstromicalUnit;
-      console.log(deltaX + centerX, deltaY + centerY);
       ctx.arc(deltaX + centerX, deltaY + centerY, 3, 0, Math.PI * 2);
       ctx.fill();
     });

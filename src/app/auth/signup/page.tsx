@@ -1,7 +1,7 @@
 "use client";
 import { useState, FormEvent } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import api from "@/lib/api";

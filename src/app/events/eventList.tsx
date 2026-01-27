@@ -8,7 +8,6 @@ import api from "@/lib/api";
 function EventListLine(props: { event: SmallBodyObject }) {
   const sendRequest = (eventName: string, eventTime: string) => {
     const accessToken = localStorage.getItem("access");
-    console.log(eventTime);
     api.post(
       `/subscribe/`,
       { event_name: eventName, event_time: new Date(eventTime).toISOString() },
