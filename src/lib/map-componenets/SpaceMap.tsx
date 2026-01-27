@@ -299,9 +299,9 @@ export function SpaceMap({
       ctx.beginPath();
       ctx.fillStyle = "#f59e0b";
       const deltaX =
-        Math.sin(sbo.latitude) * sbo.distance * zoom * PixelsPerAstromicalUnit;
-      const deltaY =
         Math.sin(sbo.longitude) * sbo.distance * zoom * PixelsPerAstromicalUnit;
+      const deltaY =
+        Math.sin(sbo.latitude) * sbo.distance * zoom * PixelsPerAstromicalUnit;
       ctx.arc(deltaX + centerX, deltaY + centerY, 3, 0, Math.PI * 2);
       ctx.fill();
     });
