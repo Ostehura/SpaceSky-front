@@ -26,7 +26,7 @@ export default function SignInPage() {
         password,
         password2: password_confirmation,
       });
-      if (res.status % 100 == 2) {
+      if (200 <= res.status && res.status <= 299) {
         router.push("/");
       } else {
         setError(res.data);
@@ -34,7 +34,7 @@ export default function SignInPage() {
     } catch (err) {
       setError(
         JSON.stringify((err as AxiosError).response?.data) ||
-          "Ooops! Something went wrong"
+          "Ooops! Something went wrong",
       );
     } finally {
       setLoading(false);

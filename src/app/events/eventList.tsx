@@ -1,8 +1,22 @@
 import Link from "next/link";
 import SmallBodyObject from "./SmallBodyObjectstype";
 import Table from "react-bootstrap/Table";
+import axios from "axios";
+import Button from "react-bootstrap/Button";
 
 function EventListLine(props: { event: SmallBodyObject }) {
+  const sendRequest = (eventName: string, eventTime: Date) => {
+    const accessToken = localStorage.getItem("access");
+    axios.post(
+      "http://localhost:8000/subscribe/",
+      { event_name: eventName, event_time: eventTime.toISOString() },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+  };
   const event = props.event;
   return (
     <tr>
@@ -19,11 +33,24 @@ function EventListLine(props: { event: SmallBodyObject }) {
         {event.longitude}
       </td>
       <td>
+        {event.azimuth}
+        <br />
+        {event.altitude}
+      </td>
+      <td>
         {"from: "}
         {event.begin_time.toLocaleString()}
         <br />
         {"till: "}
         {event.end_time.toLocaleString()}
+      </td>
+      <td>
+        <Button
+          variant="primary"
+          onClick={() => sendRequest(event.name, event.begin_time)}
+        >
+          Click me
+        </Button>
       </td>
     </tr>
   );
@@ -37,7 +64,9 @@ function EventList(props: { array: SmallBodyObject[] }) {
         <tr>
           <th>Name</th>
           <th>Location</th>
+          <th>Azimuth & Altitude</th>
           <th>Time</th>
+          <th>subscibe</th>
         </tr>
       </thead>
       <tbody>
