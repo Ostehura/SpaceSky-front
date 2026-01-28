@@ -416,8 +416,9 @@ export function SpaceMap({
   return (
     <div
       className="relative w-screen h-screen overflow-hidden "
-      style={{ paddingLeft: 50, paddingTop: 1 }}
+      style={{ paddingLeft: 50, paddingTop: 1, paddingRight:100 }}
     >
+      <div className="relative w-screen h-screen overflow-hidden " style={{ overscrollBehavior: "contain"}}>
       <canvas
         ref={canvasRef}
         className="absolute top-0 left-0 w-full h-full cursor-grab active:cursor-grabbing"
@@ -427,7 +428,9 @@ export function SpaceMap({
         onMouseLeave={handleMouseUp}
         onWheel={handleWheel}
         onClick={handleClick}
+       
       />
+      </div>
 
       {/* Controls hint */}
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-900/80 backdrop-blur-sm px-4 py-2 rounded-lg border border-slate-700">
