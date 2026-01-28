@@ -2,13 +2,15 @@
 
 import { AxiosError } from "axios";
 import { FormEvent, useEffect, useState } from "react";
-import { Alert, Button, Card, Form } from "react-bootstrap";
+import { Alert, Button, Card, Form, Modal } from "react-bootstrap";
 import SmallBodyObject from "./SmallBodyObjectstype";
 import EventList from "./eventList";
 import api from "@/lib/api";
 import { position } from "@/lib/position";
 
 export default function EventsPage() {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
   const [beginTime, setBeginTime] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -19,6 +21,7 @@ export default function EventsPage() {
     isValid: false,
   });
   const [events, setEvents] = useState<SmallBodyObject[]>([]);
+  const [subcriptionResult, setSubscriptioResult] = useState<String>("");
   useEffect(() => {
     if (typeof window !== "undefined" && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -30,7 +33,6 @@ export default function EventsPage() {
           });
         },
         (err) => {
-          console.error("Geolocation error:", err);
           setLocation((l) => ({ ...l, isValid: false }));
         },
       );
@@ -62,6 +64,7 @@ export default function EventsPage() {
           },
         },
       );
+     
       setEvents(res.data);
       setError("");
     } catch (err) {
@@ -73,7 +76,36 @@ export default function EventsPage() {
       setLoading(false);
     }
   };
+  const sendRequest = async(eventName: string, eventTime: string) => {
+    const accessToken = localStorage.getItem("access");
+    try{
+    const res = await api.post(
+      `/subscribe/`,
+      { event_name: eventName, event_time: new Date(eventTime).toISOString() },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+     console.log(res.data);
+    setSubscriptioResult(res.data?.detail);
+    setShow(true);}
+    catch (err: any)
+    {
+        setSubscriptioResult(JSON.stringify((err as AxiosError).response?.data));
+        setShow(true);
+    }
+
+  };
   return (
+    <>
+    <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Subcription Result</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{subcriptionResult}</Modal.Body>
+      </Modal>
     <Card
       className="p-4 shadow mt-5"
       style={{ maxWidth: "90%", margin: "auto" }}
@@ -114,8 +146,9 @@ export default function EventsPage() {
         </Form>
       </Card.Body>
       <Card.Body>
-        <EventList array={events} />
+        <EventList array={events} sendRequest={sendRequest} />
       </Card.Body>
     </Card>
+    </>
   );
 }

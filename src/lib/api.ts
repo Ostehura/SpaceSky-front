@@ -22,7 +22,7 @@ api.interceptors.request.use(async (config) => {
 
   if (refresh) {
     try {
-      const res = await api.post("/api/token/refresh/", {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/api/token/refresh/`, {
         refresh,
       });
 
