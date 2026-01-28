@@ -7,6 +7,8 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(async (config) => {
+  console.log("Backend URL:", process.env.NEXT_PUBLIC_BACKEND);
+
   const access = localStorage.getItem("access");
   const accessExp = localStorage.getItem("accessExpiresAt");
   const refresh = localStorage.getItem("refresh");
@@ -20,7 +22,7 @@ api.interceptors.request.use(async (config) => {
 
   if (refresh) {
     try {
-      const res = await axios.post("/api/token/refresh/", {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/api/token/refresh/`, {
         refresh,
       });
 

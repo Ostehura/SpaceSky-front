@@ -102,7 +102,7 @@ export default function SignInPage() {
             disabled={loading}
             className="w-100"
           >
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? "Signing up..." : "Sign Up"}
           </Button>
         </Form>
       </Card.Body>

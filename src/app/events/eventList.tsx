@@ -5,19 +5,7 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import api from "@/lib/api";
 
-function EventListLine(props: { event: SmallBodyObject }) {
-  const sendRequest = (eventName: string, eventTime: string) => {
-    const accessToken = localStorage.getItem("access");
-    api.post(
-      `/subscribe/`,
-      { event_name: eventName, event_time: new Date(eventTime).toISOString() },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
-  };
+function EventListLine(props: { event: SmallBodyObject, sendRequest: Function }) {
   const event = props.event;
   return (
     <tr>
@@ -49,7 +37,7 @@ function EventListLine(props: { event: SmallBodyObject }) {
         <Button
           variant="primary"
           onClick={() =>
-            sendRequest(event.name, event.begin_time.toLocaleString())
+            props.sendRequest(event.name, event.begin_time.toLocaleString())
           }
         >
           Click me
@@ -59,7 +47,7 @@ function EventListLine(props: { event: SmallBodyObject }) {
   );
 }
 
-function EventList(props: { array: SmallBodyObject[] }) {
+function EventList(props: { array: SmallBodyObject[], sendRequest: Function }) {
   const array = props.array;
   return (
     <Table striped bordered hover>
@@ -69,12 +57,12 @@ function EventList(props: { array: SmallBodyObject[] }) {
           <th>Location</th>
           <th>Azimuth & Altitude</th>
           <th>Time</th>
-          <th>subscibe</th>
+          <th>subscribe</th>
         </tr>
       </thead>
       <tbody>
         {array.map((event, index) => (
-          <EventListLine event={event} key={index} />
+          <EventListLine event={event} key={index} sendRequest={props.sendRequest} />
         ))}
       </tbody>
     </Table>
